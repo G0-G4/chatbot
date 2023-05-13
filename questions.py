@@ -7,6 +7,18 @@ from vk import(
     vk
 )
 from Keyboard import Keyboard
+import re
+
+def accept_all(s1, s2):
+    return True
+
+def accept_phone(s1, s2=None):
+    validate_phone_number_pattern = "^\\+?[1-9][0-9]{7,14}$"
+    return bool(re.match(validate_phone_number_pattern, s1)) # Returns Match object
+
+# Extract phone number from a string
+extract_phone_number_pattern = "\\+?[1-9][0-9]{7,14}"
+re.findall(extract_phone_number_pattern, 'You can reach me out at +12223334444 and +56667778888')
 
 
 def send_message_to_consultant(fake_id):
@@ -17,8 +29,6 @@ def send_message_to_consultant(fake_id):
         )
 
 MAIN_MENU = Keyboard([buttons_menu("Консультация", "синий"),buttons_menu("Лучшие продукты","синий"),faq_menu_button])
-
-# tree = Node('корень', accept_all=True)
 
 menu = Node('основное меню')
 
@@ -73,14 +83,14 @@ call.add_function(
 
 call.add_children(menu)
 
-name = call.add_children(Node('имя', accept_all = True))
+name = call.add_children(Node('имя', accepter = accept_all))
 name.add_function(
     send_message,
          ["Пожалуйста, укажите свой номер телефона.",
         Keyboard([main_menu_button])]
 )
 
-end = name.add_children(Node('end', accept_all=True))
+end = name.add_children(Node('end', accepter = accept_phone))
 end.add_function(
     send_message,
     ['ожидайте звонка', Keyboard([main_menu_button])])
@@ -90,3 +100,4 @@ questions = QuestionTree(menu)
 
 # if __name__ == '__main__':
     # tree.show()
+    # print(accept_phone(''))

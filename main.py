@@ -2,6 +2,7 @@ import random
 from vk_api.longpoll import VkLongPoll, VkEventType
 from vk import vk
 from vk import send_message
+from model import bot
  
 from questions import questions, MAIN_MENU
 
@@ -19,6 +20,7 @@ for event in VkLongPoll(vk).listen():
                 user_id,
                 'Я с радостью помогу Вам! Выберите, что Вас интересует:\n • Консультация \n• Лучшие продукты\n • FAQ',
                 MAIN_MENU)
+            continue
         
         node = questions.move_user(user_id, text)
         if node:
@@ -27,8 +29,8 @@ for event in VkLongPoll(vk).listen():
                 print('   ', c.text)
         else:
             # отправить сообщение
-            send_message(user_id, 'выберите пункт из меню')
-            print('wrong path')
+            send_message(user_id, 'возможно это вам поможет')
+            send_message(user_id, bot(text))
  
         # if text == "чат с консультантом":
         #     send_message(user_id,

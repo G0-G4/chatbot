@@ -1,13 +1,14 @@
 from treelib import Node, Tree
 from collections import defaultdict
 
+def default_accepter(s1, s2):
+    return s1 == s2
+
 class Node:
-    def __init__(self, text, accept_all = False) -> None:
+    def __init__(self, text, accepter = default_accepter) -> None:
         self.children = []
         self.text = text.strip().lower()
-        # self.function = function
-        # self.args = args
-        self.accept_all = accept_all
+        self.accepter = accepter
         self.functions = []
 
     def add_function(self, function, args = [], kwargs = {}):
@@ -17,7 +18,6 @@ class Node:
     def call(self, user_id):
         for f, a, kw in self.functions:
             f(user_id, *a, **kw)
-        # self.function(user_id, *self.args)
 
     def add_children(self, node):
         self.children.append(node)
@@ -27,9 +27,10 @@ class Node:
         return list(map(lambda x: x.text, self.children))
     
     def accept(self, message):
-        if self.accept_all:
-            return True
-        return self.text == message
+        return self.accepter(message, self.text)
+        # if self.accept_all:
+        #     return True
+        # return self.text == message
     
     def show(self, depth=0):
         print('*' * depth*2 + self.text)
@@ -59,6 +60,9 @@ class QuestionTree:
             if node.accept(message):
                 self.user_pos[user] = node
                 return node
+            elif node.text == 'end':
+                return current
+            
 
 if __name__ == '__main__':
     tree = Node('начало')
