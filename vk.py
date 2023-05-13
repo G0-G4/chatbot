@@ -34,7 +34,7 @@ def send_message(user_id, message, keyboard=None, *args, **kwargs):
     vk.method("messages.send", values)
  
  
-main_menu_button = [Text("Основное меню", "primary")]
+main_menu_button = [Text("Основное меню", "secondary")]
 faq_menu_button = [Text("FAQ", "positive")]
  
 def buttons_menu(text, color):

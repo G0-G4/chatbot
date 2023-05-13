@@ -1,4 +1,3 @@
-from treelib import Node, Tree
 from collections import defaultdict
 
 def default_accepter(s1, s2):
