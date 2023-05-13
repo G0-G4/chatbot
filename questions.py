@@ -21,10 +21,15 @@ extract_phone_number_pattern = "\\+?[1-9][0-9]{7,14}"
 re.findall(extract_phone_number_pattern, 'You can reach me out at +12223334444 and +56667778888')
 
 
-def send_message_to_consultant(fake_id):
+def send_message_to_consultant(fake_id, *args, **kwargs):
+    print(kwargs)
+    if 'message' in kwargs:
+        message = kwargs['message']
+    else:
+        message = kwargs['text']
     vk.get_api().messages.send(
         user_id = 300297538,
-        message = 'Клиент ждет Вашего ответа в чате', 
+        message = message,
         random_id = 0
         )
 
@@ -42,9 +47,27 @@ products = menu.add_children(Node('Лучшие продукты'))
 products.add_function(
     send_message,
     ["Наши продукты бла бла",
-        Keyboard([main_menu_button])]
+        Keyboard([
+            main_menu_button,
+            buttons_menu("кредиты", "синий"),
+            buttons_menu("карты", "синий")])]
 )
 products.add_children(menu)
+
+# credits = products.add_children(Node("кредиты"))
+# credits.add_function(
+#     send_message,
+#     ['кредиты', Keyboard([main_menu_button])]
+# )
+# credits.add_children(menu)
+
+# cards = products.add_children(Node("карты"))
+# cards.add_function(
+#     send_message,
+#     ['карты', Keyboard([main_menu_button])]
+# )
+# cards.add_children(menu)
+
 
 faq = menu.add_children(Node('FAQ'))
 faq.add_function(
@@ -72,7 +95,7 @@ chat.add_function(
 )
 chat.add_children(menu)
 
-chat.add_function(send_message_to_consultant)
+chat.add_function(send_message_to_consultant, kwargs={'message': 'Клиент ждет Вашего ответа в чате'})
 
 call = consult.add_children(Node('перезвоните мне'))
 call.add_function(
@@ -89,11 +112,17 @@ name.add_function(
          ["Пожалуйста, укажите свой номер телефона.",
         Keyboard([main_menu_button])]
 )
+name.add_function(
+    send_message_to_consultant
+)
 
 end = name.add_children(Node('end', accepter = accept_phone))
 end.add_function(
     send_message,
     ['ожидайте звонка', Keyboard([main_menu_button])])
+end.add_function(
+    send_message_to_consultant
+)
 end.add_children(menu)
 
 questions = QuestionTree(menu)

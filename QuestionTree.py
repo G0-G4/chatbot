@@ -10,6 +10,7 @@ class Node:
         self.text = text.strip().lower()
         self.accepter = accepter
         self.functions = []
+        self.input = None
 
     def add_function(self, function, args = [], kwargs = {}):
         self.functions.append([function, args, kwargs])
@@ -17,6 +18,7 @@ class Node:
 
     def call(self, user_id):
         for f, a, kw in self.functions:
+            kw['text'] = self.input
             f(user_id, *a, **kw)
 
     def add_children(self, node):
@@ -59,6 +61,7 @@ class QuestionTree:
         for node in current.children:
             if node.accept(message):
                 self.user_pos[user] = node
+                node.input = message
                 return node
             elif node.text == 'end':
                 return current
