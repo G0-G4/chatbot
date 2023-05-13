@@ -1,0 +1,92 @@
+from QuestionTree import QuestionTree, Node
+from vk import(
+    send_message,
+    buttons_menu,
+    faq_menu_button,
+    main_menu_button,
+    vk
+)
+from Keyboard import Keyboard
+
+
+def send_message_to_consultant(fake_id):
+    vk.get_api().messages.send(
+        user_id = 300297538,
+        message = 'Клиент ждет Вашего ответа в чате', 
+        random_id = 0
+        )
+
+MAIN_MENU = Keyboard([buttons_menu("Консультация", "синий"),buttons_menu("Лучшие продукты","синий"),faq_menu_button])
+
+# tree = Node('корень', accept_all=True)
+
+menu = Node('основное меню')
+
+menu.add_function(
+        send_message,
+        ["Я с радостью помогу Вам! Выберите, что Вас интересует:\n • Консультация \n• Лучшие продукты\n • FAQ",
+        MAIN_MENU]
+)
+
+products = menu.add_children(Node('Лучшие продукты'))
+products.add_function(
+    send_message,
+    ["Наши продукты бла бла",
+        Keyboard([main_menu_button])]
+)
+products.add_children(menu)
+
+faq = menu.add_children(Node('FAQ'))
+faq.add_function(
+    send_message,
+    ["часто задаваемые вопросы и ответы",
+    Keyboard([main_menu_button])]
+)
+faq.add_children(menu)
+
+consult = menu.add_children(Node('консультация'))
+consult.add_function(
+         send_message,
+         ["Если Вы хотите консультацию в чате или звонок оператора – выберите соответствующий пункт меню.\n Но я могу помочь Вам с ответами на самые популярные вопросы, просто откройте раздел FAQ.",
+        Keyboard([buttons_menu("Чат с консультантом", "синий"), buttons_menu("Перезвоните мне", "синий"),
+        main_menu_button])]
+)
+
+consult.add_children(menu)
+
+chat = consult.add_children(Node('чат с консультантом'))
+chat.add_function(
+         send_message,
+         ["Я направил Ваш запрос консультанту – ожидайте его сообщения.\n А пока можете задать ему вопрос или описать свою ситуацию.",
+        Keyboard([main_menu_button])]
+)
+chat.add_children(menu)
+
+chat.add_function(send_message_to_consultant)
+
+call = consult.add_children(Node('перезвоните мне'))
+call.add_function(
+         send_message,
+         ["Пожалуйста, уточните, как можно к Вам обращаться.",
+        Keyboard([main_menu_button])]
+)
+
+call.add_children(menu)
+
+name = call.add_children(Node('имя', accept_all = True))
+name.add_function(
+    send_message,
+         ["Пожалуйста, укажите свой номер телефона.",
+        Keyboard([main_menu_button])]
+)
+
+end = name.add_children(Node('end', accept_all=True))
+end.add_function(
+    send_message,
+    ['ожидайте звонка', Keyboard([main_menu_button])])
+end.add_children(menu)
+
+questions = QuestionTree(menu)
+
+# if __name__ == '__main__':
+    # tree.show()

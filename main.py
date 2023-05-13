@@ -1,50 +1,38 @@
-import json
-
-import vk_api
+import random
 from vk_api.longpoll import VkLongPoll, VkEventType
+from vk import vk
+from vk import send_message
+ 
+from questions import questions, MAIN_MENU
 
-session = vk_api.VkApi(token="vk1.a.1zYvFKvwxgBnTlnp7jj5nj3vt3qsWpLLIrTQMKblJrILHn6IJVZW3seodka9ZVb--m9xLgi_uQaPAlaUE-CzqY7tidwjpJ8q7k52d2iU-J1PJVKFfab3FI1--9_ygcmdF2u0ghWlgyFoDkOVr7F1jHMKmgdCjjhP9ZqyGFlz2vMeBoJeidjuafIvicA_OTIf_tNjnAxlEeBqse8EplRbZg")
+requests = {}
 
-class User():
-    def __init__(self,id,mode,cash):
-        self.id = id
-        self.mode = mode
-        self.cagh = cash
-def get_keyboard(buts):
-    nb = []
-    color = ""
-    for i in range(len(buts)):
-        nb.append([])
-        for k in range(len(buts[i])):
-            nb[i].append(None)
-    for i in range(len(buts)):
-        for k in range(len(buts[i])):
-            text = buts[i][k][0]
-            color = {'зеленый' : 'positive', 'красный': 'negative', 'синий':'primary'} [buts[i][k][1]]
-            nb[i][k] = {"action":{"type":"text","payload":"{\"button\": \""+ "1" +"\"}","label":f"{text}"}, "color":f"{color}"}
-    first_keyboard = {"one_time": False, "buttons":nb}
-    first_keyboard = json.dumps(first_keyboard, ensure_ascii=False).encode('utf-8')
-    first_keyboard = str(first_keyboard.decode('utf-8'))
-    return first_keyboard
-
-
-
-def sender(user_id, message, key):
-    session.method("messages.send", {
-        "user_id": user_id,
-        "message": message,
-        "random_id": 0,
-        'keyboard': key
-    })
-
-
-start_key = get_keyboard([
-    [('Начать','синий')]
-])
-longpoll = VkLongPoll(session)
-for event in longpoll.listen():
+for event in VkLongPoll(vk).listen():
     if event.type == VkEventType.MESSAGE_NEW and event.to_me:
         user_id = event.user_id
-        sender(user_id, "Здравствуйте! Я Роман -- виртуальный помощник Ренессанс Банка. Отвечу на Ваши вопросы и помогу найти интересующую информацию о банке. Просто нажмите \"Начать\"! ", start_key)
+        text = event.text.lower()
+        print(text)
 
-
+        if not questions.user_exists(user_id):
+            questions.create_user(user_id)
+            send_message(
+                user_id,
+                'Я с радостью помогу Вам! Выберите, что Вас интересует:\n • Консультация \n• Лучшие продукты\n • FAQ',
+                MAIN_MENU)
+        
+        node = questions.move_user(user_id, text)
+        if node:
+            node.call(user_id)
+            for c in node.children:
+                print('   ', c.text)
+        else:
+            # отправить сообщение
+            send_message(user_id, 'выберите пункт из меню')
+            print('wrong path')
+ 
+        # if text == "чат с консультантом":
+        #     send_message(user_id,
+        #                  "Я направил Ваш запрос консультанту – ожидайте его сообщения.\n А пока можете задать ему вопрос или описать свою ситуацию.",
+        #                  Keyboard([main_menu_button]))
+        #     # тут отправляем от бота сообщение модератору
+        #     vk.get_api().messages.send(user_id=300297538, message='Клиент ждет Вашего ответа в чате', random_id=0)
