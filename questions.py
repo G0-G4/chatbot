@@ -50,10 +50,25 @@ products = menu.add_children(Node('FAQ'))
 products.add_function(
     send_message,
     ["Я собрал самые популярные вопросы в одном разделе, и чтобы Вам было проще, разделил их на категории:\n • Персональные данные\n • Кредиты\n • Карты\n • Вклады\n • Инвестиции\n • Онлайн-сервисы\n",
-        Keyboard([main_menu_button,[OpenLink("Подробнее", "https://rencredit.ru/support/faq/")],buttons_menu("Кредиты", "синий"),buttons_menu("Персональные данные", "синий")])]
+        Keyboard([main_menu_button,[OpenLink("Подробнее", "https://rencredit.ru/support/faq/")],buttons_menu("Кредиты", "синий"),buttons_menu("Персональные данные", "синий"),buttons_menu("Карты", "синий")])]
 )
 products.add_children(menu)
 
+cards = products.add_children(Node('Карты'))
+cards.add_function(
+    send_message,
+    ["Пожалуйста, выберите интересующую Вас тему в меню. \n Если Вы хотите консультацию в чате или звонок оператора - выберите соответствующий пункт меню.\n",
+        Keyboard([main_menu_button,
+                  [OpenLink("Оформление, активация и перевыпуск карты", "https://rencredit.ru/support/faq/oformlenie-karti/")],
+                  [OpenLink("Блокировка/разблокировка", "https://rencredit.ru/support/faq/blok-karty/")],
+                  [OpenLink("Оплата/пополнение карты", "https://rencredit.ru/support/faq/oplata-karty/")],
+                  [OpenLink("Закрытие счёта карты", "https://rencredit.ru/support/faq/zakritie-scheta-karti/")],
+                  [OpenLink("Просроченная задолжность", "https://rencredit.ru/support/faq/zadolzh-card/")],
+                  [OpenLink("Подключение к Программе страхования", "https://rencredit.ru/support/faq/programmi-strahovaniya/")],
+                  [OpenLink("Услуга «SMS-оповещения»", "https://rencredit.ru/support/faq/sms/")]
+                  ])]
+)
+cards.add_children(menu)
 
 credits = products.add_children(Node('Кредиты'))
 credits.add_function(
@@ -155,6 +170,28 @@ faq.add_function(
     Keyboard([main_menu_button])]
 )
 faq.add_children(menu)
+
+
+best_credits = menu.add_children(Node('Лучшие продукты'))
+best_credits.add_function(
+    send_message,
+    ["Наши продукты – Ваше идеальное решение!\n Выберите, что интересует Вас больше всего:",
+    Keyboard([main_menu_button,buttons_menu("Карты", "синий")])]
+)
+best_credits.add_children(menu)
+
+product_cards = best_credits.add_children(Node('Карты'))
+product_cards.add_function(
+    send_message,
+    ["Наши банковские карты —  это ключ к финансовой свободе. \n Кредитная карта РАЗУМНАЯ 145 дней без %. Бесплатное обслуживание навсегда \nДебетовая карта «Главная МИР». 9,75% годовых на остаток и кэшбэк 1,5% на всё. Бесплатное обслуживание\n Кредитная карта «Практичная МИР». Карта для регулярных покупоки ежедневного дохода",
+    Keyboard([main_menu_button,
+              [OpenLink("Кредитная карта РАЗУМНАЯ 145 дней без %", "https://rencredit.ru/cards/razumnaya/")],
+                [OpenLink("Дебетовая карта «Главная МИР»", "https://rencredit.ru/cards/debit-main/")],
+                [OpenLink("Кредитная карта «Практичная МИР»", "https://rencredit.ru/cards/practic/")]
+              ])]
+)
+product_cards.add_children(menu)
+
 
 consult = menu.add_children(Node('Консультация'))
 consult.add_function(
