@@ -9,6 +9,7 @@ class Node:
         # self.args = args
         self.accept_all = accept_all
         self.functions = []
+        self.input = None
 
     def add_function(self, function, args = [], kwargs = {}):
         self.functions.append([function, args, kwargs])
@@ -16,8 +17,8 @@ class Node:
 
     def call(self, user_id):
         for f, a, kw in self.functions:
+            kw['text'] = self.input
             f(user_id, *a, **kw)
-        # self.function(user_id, *self.args)
 
     def add_children(self, node):
         self.children.append(node)
@@ -28,6 +29,7 @@ class Node:
     
     def accept(self, message):
         if self.accept_all:
+            self.input = message
             return True
         return self.text == message
     

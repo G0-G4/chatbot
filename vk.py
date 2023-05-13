@@ -9,7 +9,7 @@ class ButtonColor:
     POSITIVE = "positive"
     PRIMARY = "primary"
     SECONDARY = "secondary"
-    
+
 class Text:
  
     def __new__(cls, label: Optional[str], color: Optional[str]="secondary", payload: Optional[str]=None):
@@ -22,7 +22,7 @@ class Text:
             "color": color
         }
  
-def send_message(user_id, message, keyboard=None):
+def send_message(user_id, message, keyboard=None, *args, **kwargs):
     values = {
         "user_id": user_id,
         "message": message,
