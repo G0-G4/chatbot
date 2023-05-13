@@ -39,7 +39,6 @@ class Node:
             c.show(depth + 1)
     
 class QuestionTree:
-
     def create_rules(self):
         pass
 

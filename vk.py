@@ -27,12 +27,23 @@ class Text:
             },
             "color": color
         }
- 
+
+
+class OpenLink:
+    def __new__(cls, label: Optional[str], link: Optional[str], payload: Optional[str] = None):
+        return {
+            "action": {
+                "type": "open_link",
+                "label": label,
+                "link": link,
+                "payload": payload
+            }
+        }
 def send_message(user_id, message, keyboard=None, *args, **kwargs):
     values = {
         "user_id": user_id,
         "message": message,
-        "random_id": 0
+        "random_id": 0,
     }
  
     if keyboard is not None:
