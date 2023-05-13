@@ -6,7 +6,6 @@ import os
 load_dotenv()
 
 token = os.environ.get('token')
-print(token)
 vk = vk_api.VkApi(token = token)
 
 class ButtonColor:

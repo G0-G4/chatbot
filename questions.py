@@ -37,7 +37,6 @@ def send_message_to_consultant(fake_id, *args, **kwargs):
 
 MAIN_MENU = Keyboard([buttons_menu("Консультация", "синий"),buttons_menu("Лучшие продукты","синий"),faq_menu_button])
 
-# tree = Node('корень', accept_all=True)
 
 menu = Node('Основное меню')
 
@@ -70,7 +69,6 @@ making_credits.add_function(
     ["• Подать заявку на кредит наличными можно на сайте, в Мобильном банке, офисе, а также по телефону 8 (800) 200-09-81 (звонок бесплатный).\n • Для оформления кредита на товар обратитесь напрямую в магазин или оформите заявку на сайте партнера.\n",
          Keyboard([main_menu_button,[OpenLink("Написать обращение", "https://rencredit.ru/support/appeals/")]])]
 )
-# [OpenLink("Основное меню", "https://github.com/G0-G4/chatbot")]
 making_credits.add_children(menu)
 making_credits.add_children(credits)
 
@@ -207,7 +205,3 @@ end.add_function(
 end.add_children(menu)
 
 questions = QuestionTree(menu)
-
-# if __name__ == '__main__':
-    # tree.show()
-    # print(accept_phone(''))

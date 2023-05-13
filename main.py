@@ -28,13 +28,5 @@ for event in VkLongPoll(vk).listen():
             for c in node.children:
                 print('   ', c.text)
         else:
-            # отправить сообщение
             send_message(user_id, 'возможно это вам поможет')
             send_message(user_id, bot(text))
- 
-        # if text == "чат с консультантом":
-        #     send_message(user_id,
-        #                  "Я направил Ваш запрос консультанту – ожидайте его сообщения.\n А пока можете задать ему вопрос или описать свою ситуацию.",
-        #                  Keyboard([main_menu_button]))
-        #     # тут отправляем от бота сообщение модератору
-        #     vk.get_api().messages.send(user_id=300297538, message='Клиент ждет Вашего ответа в чате', random_id=0)
