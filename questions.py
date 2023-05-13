@@ -6,7 +6,9 @@ from vk import(
     main_menu_button,
     vk
 )
-from Keyboard import Keyboard
+from Keyboard import  Keyboard
+from vk import Text, OpenLink
+
 import re
 
 def accept_all(s1, s2):
@@ -45,11 +47,11 @@ menu.add_function(
         MAIN_MENU]
 )
 
-products = menu.add_children(Node('Лучшие продукты'))
+products = menu.add_children(Node('FAQ'))
 products.add_function(
     send_message,
-    ["Наши продукты – Ваше идеальное решение!\n Выберите, что интересует Вас больше всего:\n",
-        Keyboard([main_menu_button,buttons_menu("Кредиты", "синий"),buttons_menu("Персональные данные", "синий")])]
+    ["Я собрал самые популярные вопросы в одном разделе, и чтобы Вам было проще, разделил их на категории:\n • Персональные данные\n • Кредиты\n • Карты\n • Вклады\n • Инвестиции\n • Онлайн-сервисы\n",
+        Keyboard([main_menu_button,[OpenLink("Подробнее", "https://rencredit.ru/support/faq/")],buttons_menu("Кредиты", "синий"),buttons_menu("Персональные данные", "синий")])]
 )
 products.add_children(menu)
 
@@ -66,8 +68,9 @@ making_credits = credits.add_children(Node('Оформление кредита'
 making_credits.add_function(
     send_message,
     ["• Подать заявку на кредит наличными можно на сайте, в Мобильном банке, офисе, а также по телефону 8 (800) 200-09-81 (звонок бесплатный).\n • Для оформления кредита на товар обратитесь напрямую в магазин или оформите заявку на сайте партнера.\n",
-        Keyboard([main_menu_button,buttons_menu("Кредиты", "синий")])]
+         Keyboard([main_menu_button,[OpenLink("Написать обращение", "https://rencredit.ru/support/appeals/")]])]
 )
+# [OpenLink("Основное меню", "https://github.com/G0-G4/chatbot")]
 making_credits.add_children(menu)
 making_credits.add_children(credits)
 
