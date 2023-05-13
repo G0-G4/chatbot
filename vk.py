@@ -1,7 +1,13 @@
 import vk_api
 from typing import Optional
+from dotenv import load_dotenv
+import os
 
-vk = vk_api.VkApi(token="vk1.a.1zYvFKvwxgBnTlnp7jj5nj3vt3qsWpLLIrTQMKblJrILHn6IJVZW3seodka9ZVb--m9xLgi_uQaPAlaUE-CzqY7tidwjpJ8q7k52d2iU-J1PJVKFfab3FI1--9_ygcmdF2u0ghWlgyFoDkOVr7F1jHMKmgdCjjhP9ZqyGFlz2vMeBoJeidjuafIvicA_OTIf_tNjnAxlEeBqse8EplRbZg")
+load_dotenv()
+
+token = os.environ.get('token')
+print(token)
+vk = vk_api.VkApi(token = token)
 
 class ButtonColor:
  
